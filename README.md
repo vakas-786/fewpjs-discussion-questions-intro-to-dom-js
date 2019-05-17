@@ -1,47 +1,95 @@
-# Discussion Questions: ES6 Features
+# Discussion Questions: Execution Context
 
 ## Objectives
 
-- Interpret feature documentation
-- Recognize syntactic sugar
+- Explain JavaScript execution context in terms of English language patterns
+- Predict behavior of JavaScript's `this` keyword
 
-## ES6 Feature Review Questions
+## Exercise: Context in Language
 
-### Summary of Features
+In conversation, we use pronouns to 'stand in' for the nouns they refer to. In order to understand sentences that take advantage of this 'language feature', speakers need to be able to infer the meaning _from the context_.
 
-Read the [Summary of ES6 Features](https://github.com/lukehoban/es6features#readme)
+For the following example phrases, figure out what the **bolded pronoun** refers to:
 
-As you read, keep several running lists:
+> 🎵 Oh, **I** just can't wait to be king! 🎵
 
-- terms and concepts you don't recognize or don't understand
-- shorthand syntax for code that you've written in the past week
+> All the world's a stage, and all the men and women merely players: **they** have their exits and their entrances. [Shakespeare, As You Like It]
 
-Don't feel the need to understand what all of the language features mean right now - since you have the list of features you don't understand, you can return later to read more.
+> Every building is designed around the movements of people: **they** have their exits and their entrances.
 
-### Comparison of ES6 Features
+> **This** weekend we are going to visit Grandma
 
-Next, open the explorable [Comparison of ES6 Features](http://es6-features.org). Each person in your group should choose one feature to explore. After 10 minutes of exploration, you'll take turns explaining the feature to your teammates. You should be able to speak to
+> "Hello, who is **this**?"
 
-- The syntax of the new feature
-- What the feature is for
-- What syntax the feature replaces or is a shorthand for
-- Some example uses of the feature
+### Context in Language Discussion Questions
 
-Good features to choose:
+In English, you are able to follow certain (unconscious) rules to determine what a particular pronoun refers to.
 
-- Template Literals
-- Scoping
-- Constants
-- Extended Parameter Handling
-- Enhanced Object Properties
-- Destructuring Assignment
+1. The phrase "**they** have their exits and their entrances" referred to a different **they** in the two different sentences. What let you know what the pronoun referred to?
 
-## Group Discussion
+2. What rules does the JavaScript engine use to infer the meaning of `this`?
 
-1. Compare your lists of terms you don't recognize. Do you as a group have explanations for features that you did not individually?
-2. For the feature you chose, explain the feature to your group.
+> Note: Interpreting the phrase "Hello, who is **this**?" in English follows similar rules to the way the JavaScript engine determines the meaning of `this`. It's based on the _caller_ (unless another rule applies). You might keep this example in mind if you're trying to remember how JavaScript's `this` rules work.
 
-## Further Reading
+## Predicting the behavior of JavaScript's `this` keyword
 
-- [TC39 Process](https://tc39.github.io/process-document/) - how does the ECMAScript standard get updated?
-- [TC39 Proposals](https://github.com/tc39/proposals) - what is the status of proposals for changes to the ECMAScript standard?
+In your groups, for each of the following snippets, predict the output. Then, run the sample code and check if your answer was right. If you predicted wrong, try to figure out why the code behaved differently from what you expected.
+
+Pay close attention - the rules aren't always what you think at first glance.
+
+### Example 1
+
+```js
+var telephone = {
+  origin: "home phone",
+  answer: function() {
+    console.log(`Hello, ${this.origin} called the function`);
+  }
+};
+
+telephone.answer();
+```
+
+### Example 2
+
+```js
+var telephone = {
+  origin: "home phone",
+  answer: function() {
+    console.log(`Hello, ${this.origin} called the function`);
+  }
+};
+
+answer = telephone.answer;
+answer();
+```
+
+### Example 3
+
+```js
+var telephone = {
+  answer: function() {
+    console.log(`Hello, ${this.origin} called the function`);
+  }
+};
+
+var cellphone = {
+  origin: "cell phone"
+};
+
+cellphone.answer = telephone.answer;
+cellphone.answer();
+```
+
+### Example 4
+
+```js
+var telephone = {
+  origin: "home phone",
+  answer: () => {
+    console.log(`Hello, ${this.origin} called the function`);
+  }
+};
+
+telephone.answer();
+```
